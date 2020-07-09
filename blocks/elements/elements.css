@@ -1,9 +1,3 @@
-@import url(./__card/elements__card.css);
-@import url(./__image/elements__image.css);
-@import url(./__info/elements__info.css);
-@import url(./__place/elements__place.css);
-@import url(./__like/elements__like.css);
-
 .elements {
   width: 67%;
   margin: 0 auto;
