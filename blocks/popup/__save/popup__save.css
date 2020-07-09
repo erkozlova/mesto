@@ -1,0 +1,11 @@
+.popup__save {
+  width: 83%;
+  height: 50px;
+  margin: 48px auto 37px;
+  background-color: black;
+  color: white;
+}
+
+.popup__save:hover {
+  opacity: 0.8;
+}
