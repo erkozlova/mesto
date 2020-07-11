@@ -2,15 +2,3 @@
   width: 100%;
   border-radius: 10px 10px 0 0;
 }
-
-@media screen and (max-width: 1269px) {
-  .elements__image {
-    border-radius: 4% 4% 0 0;
-  }
-}
-
-@media screen and (max-width: 837px) {
-  .elements__image {
-    border-radius: 4% 4% 0 0;
-  }
-}

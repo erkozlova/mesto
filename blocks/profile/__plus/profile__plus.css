@@ -1,0 +1,6 @@
+@media screen and (max-width: 900px) {
+  .profile__plus {
+    width: 16px;
+    height: 16px;
+  }
+}

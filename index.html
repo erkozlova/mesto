@@ -7,21 +7,21 @@
     <title>Mesto</title>
   </head>
   <body class="body">
-    <main class="page">
       <section class="header">
         <img class="header__logo" src="./images/logo.svg" alt="Логотип">
       </section>
 
+    <main>
       <section class="profile">
         <img class="profile__avatar" src="images/avatar.jpg" alt="Аватар">
         <div class="profile__info">
           <div class="profile__name-container">
             <h1 class="profile__name">Жак-Ив Кусто</h1>
-            <button class="profile__editor"><img src="images/editor.svg" alt="Кнопка редактирования"></button>
+            <button class="profile__editor" type="button"><img src="images/editor.svg" alt="Кнопка редактирования"></button>
           </div>
           <p class="profile__description">Исследователь океана</p>
         </div>
-        <button class="profile__addition" ><img src="images/plus.svg" alt="Кнопка добавления"></button>
+        <button class="profile__addition" type="button"><img class="profile__plus" src="images/plus.svg" alt="Кнопка добавления"></button>
       </section>
 
 
@@ -30,7 +30,7 @@
           <img class="elements__image" src="images/kirill-pershin-1088404-unsplash.png" alt="Карачаевск">
           <div class="elements__info">
             <h2 class="elements__place">Карачаевск</h2>
-            <button class="elements__like" ><img src="./images/like.svg" alt="Нравится" ></button>
+            <button class="elements__like" type="button"><img src="./images/like.svg" alt="Нравится" ></button>
           </div>
         </div>
 
@@ -38,7 +38,7 @@
           <img class="elements__image" src="images/kirill-pershin-1404681-unsplash.png" alt="Гора Эльбрус">
           <div class="elements__info">
             <h2 class="elements__place">Гора Эльбрус</h2>
-            <button class="elements__like" ><img src="./images/like.svg" alt="Нравится"></button>
+            <button class="elements__like" type="button"><img src="./images/like.svg" alt="Нравится"></button>
           </div>
         </div>
 
@@ -46,7 +46,7 @@
           <img class="elements__image" src="images/kirill-pershin-1556355-unsplash.png" alt="Домбай">
           <div class="elements__info">
             <h2 class="elements__place">Домбай</h2>
-            <button class="elements__like" ><img src="./images/like.svg" alt="Нравится"></button>
+            <button class="elements__like" type="button"><img src="./images/like.svg" alt="Нравится"></button>
           </div>
         </div>
 
@@ -54,7 +54,7 @@
           <img class="elements__image" src="images/kirill-pershin-1404681-unsplash.png" alt="Гора Эльбрус">
           <div class="elements__info">
             <h2 class="elements__place">Гора Эльбрус</h2>
-            <button class="elements__like" ><img src="./images/like.svg" alt="Нравится"></button>
+            <button class="elements__like" type="button"><img src="./images/like.svg" alt="Нравится"></button>
           </div>
         </div>
 
@@ -62,7 +62,7 @@
           <img class="elements__image" src="images/kirill-pershin-1556355-unsplash.png" alt="Домбай">
           <div class="elements__info">
             <h2 class="elements__place">Домбай</h2>
-            <button class="elements__like" ><img src="./images/like.svg" alt="Нравится"></button>
+            <button class="elements__like" type="button"><img src="./images/like.svg" alt="Нравится"></button>
           </div>
         </div>
 
@@ -70,27 +70,27 @@
           <img class="elements__image" src="images/kirill-pershin-1088404-unsplash.png" alt="Карачаево-Черкесия">
           <div class="elements__info">
             <h2 class="elements__place">Карачаево-Черкесия</h2>
-            <button class="elements__like" ><img src="./images/like.svg" alt="Нравится"></button>
+            <button class="elements__like" type="button"><img src="./images/like.svg" alt="Нравится"></button>
           </div>
         </div>
       </section>
+    </main>
 
-      <section class="footer">
-        <p class="footer__text">© 2020 Mesto Russia</p>
-      </section>
-
+      <footer class="footer">
+        <p class="footer__text">&copy; 2020 Mesto Russia</p>
+      </footer>
+      
       <section class="popup">
         <div class="popup__container">
-          <form class="popup__form">
-            <label class="popup__title">Редактировать профиль</label>
-            <input class="popup__name" type="text">
-            <input class="popup__description" type="text">
+          <form class="popup__form" name="author-info">
+            <h3 class="popup__title">Редактировать профиль</h3>
+            <input class="popup__input popup__input_value_name" type="text"name="author-name">
+            <input class="popup__input popup__input_value_description" type="text" name="author-description">
             <input class="popup__save" type="submit" value="Сохранить">
           </form>
-          <div class="popup__close"><img src="./images/close-icon.svg" alt="Зактрыть"></div>
+          <button class="popup__close" type="button"><img src="./images/close-icon.svg" alt="Зактрыть"></button>
         </div>
       </section>
-    </main>
     <script src="./scripts/script.js"></script>
   </body>
 </html>

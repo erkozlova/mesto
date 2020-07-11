@@ -1,19 +1,18 @@
 let editorElement = document.querySelector('.profile__editor'); 
 let popup = document.querySelector('.popup');
 let closedElement = popup.querySelector('.popup__close');
-let popup__name = popup.querySelector('.popup__name');
-let popup__description = popup.querySelector('.popup__description');
-let profile__name = document.querySelector('.profile__name');
-let profile__description = document.querySelector('.profile__description');
-let SaveButton = popup.querySelector('.popup__save');
-let popup__form = popup.querySelector('.popup__form');
+let popupName = popup.querySelector('.popup__input_value_name');
+let popupDescription = popup.querySelector('.popup__input_value_description');
+let profileName = document.querySelector('.profile__name');
+let profileDescription = document.querySelector('.profile__description');
+let popupForm = popup.querySelector('.popup__form');
 
 console.log(popup);
 
 function openForm () {
   popup.classList.add('popup_opened');
-  popup__name.value = profile__name.textContent;
-  popup__description.value = profile__description.textContent;
+  popupName.value = profileName.textContent;
+  popupDescription.value = profileDescription.textContent;
   console.log(popup);
 }
 
@@ -23,13 +22,13 @@ function closeForm () {
 
 function formSubmitHandler (evt) {
   evt.preventDefault();
-  profile__name.textContent = popup__name.value;
-  profile__description.textContent = popup__description.value;
-  console.log(popup__name.value);
-  console.log(popup__description.value);
+  profileName.textContent = popupName.value;
+  profileDescription.textContent = popupDescription.value;
+  console.log(popupName.value);
+  console.log(popupDescription.value);
   closeForm();
 }
 
 editorElement.addEventListener('click', openForm);
 closedElement.addEventListener('click', closeForm);
-popup__form.addEventListener('submit', formSubmitHandler);
+popupForm.addEventListener('submit', formSubmitHandler);
