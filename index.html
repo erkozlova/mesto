@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="./pages/index.css">
     <title>Mesto</title>
   </head>
-  <body class="body">
+  <body class="page">
       <section class="header">
         <img class="header__logo" src="./images/logo.svg" alt="Логотип">
       </section>
@@ -79,17 +79,15 @@
       <footer class="footer">
         <p class="footer__text">&copy; 2020 Mesto Russia</p>
       </footer>
-      
+
       <section class="popup">
-        <div class="popup__container">
           <form class="popup__form" name="author-info">
             <h3 class="popup__title">Редактировать профиль</h3>
             <input class="popup__input popup__input_value_name" type="text"name="author-name">
             <input class="popup__input popup__input_value_description" type="text" name="author-description">
             <input class="popup__save" type="submit" value="Сохранить">
+            <button class="popup__close" type="button"><img src="./images/close-icon.svg" alt="Зактрыть"></button>
           </form>
-          <button class="popup__close" type="button"><img src="./images/close-icon.svg" alt="Зактрыть"></button>
-        </div>
       </section>
     <script src="./scripts/script.js"></script>
   </body>
