@@ -9,13 +9,6 @@
   position: relative;
 }
 
-@media screen and (min-width: 1281px) {
-  .popup__form {
-    position: absolute;
-    top: 430px;
-  }
-}
-
 @media screen and (max-width: 550px) {
   .popup__form {
     width: 70%;
