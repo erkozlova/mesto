@@ -17,3 +17,9 @@
     margin-bottom: 36px;
   }
 }
+
+@media screen and (max-width: 837px) {
+  .profile {
+    width: 88%;
+  }
+}

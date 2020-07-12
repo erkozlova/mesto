@@ -2,6 +2,7 @@
   margin-right: 22px;
   background-color: white;
   border: none;
+  cursor: pointer;
 }
 
 .elements__like:hover {

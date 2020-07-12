@@ -4,6 +4,7 @@
   background-color: black;
   border: solid 1px white;
   margin-left: 17px;
+  cursor: pointer;
 }
 
 .profile__editor:hover {

@@ -9,7 +9,7 @@
   justify-self: end;
   margin-left: auto;
   align-self: center;
-  
+  cursor: pointer;
 }
 
 .profile__addition:hover {
@@ -20,5 +20,11 @@
   .profile__addition {
     width: 88%;
     margin: 36px auto 0;
+  }
+}
+
+@media screen and (max-width: 837px) {
+  .profile__addition {
+    width: 100%;
   }
 }
