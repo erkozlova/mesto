@@ -1,34 +1,100 @@
-let editorElement = document.querySelector('.profile__editor'); 
-let popup = document.querySelector('.popup');
-let closedElement = popup.querySelector('.popup__close');
-let popupName = popup.querySelector('.popup__input_value_name');
-let popupDescription = popup.querySelector('.popup__input_value_description');
-let profileName = document.querySelector('.profile__name');
-let profileDescription = document.querySelector('.profile__description');
-let popupForm = popup.querySelector('.popup__form');
+// Попап редактирования
 
-console.log(popup);
+let profileName = document.querySelector(".profile__name");
+let profileDescription = document.querySelector(".profile__description");
 
-function openForm () {
-  popup.classList.add('popup_opened');
+let editorElement = document.querySelector(".profile__editor");
+let popupEdit = document.querySelector(".popup_edit");
+let closedEdit = popupEdit.querySelector(".popup__close");
+
+let popupName = popupEdit.querySelector(".popup__input_value_name");
+let popupDescription = popupEdit.querySelector(
+  ".popup__input_value_description"
+);
+let popupEditForm = popupEdit.querySelector(".popup__form");
+
+function openEdit() {
+  popupEdit.classList.add("popup_opened");
   popupName.value = profileName.textContent;
   popupDescription.value = profileDescription.textContent;
-  console.log(popup);
 }
 
-function closeForm () {
-  popup.classList.remove('popup_opened');
+function closeEdit() {
+  popupEdit.classList.remove("popup_opened");
 }
 
-function formSubmitHandler (evt) {
+function formSubmitHandler(evt) {
   evt.preventDefault();
   profileName.textContent = popupName.value;
   profileDescription.textContent = popupDescription.value;
-  console.log(popupName.value);
-  console.log(popupDescription.value);
-  closeForm();
+  closeEdit();
 }
 
-editorElement.addEventListener('click', openForm);
-closedElement.addEventListener('click', closeForm);
-popupForm.addEventListener('submit', formSubmitHandler);
+editorElement.addEventListener("click", openEdit);
+closedEdit.addEventListener("click", closeEdit);
+popupEditForm.addEventListener("submit", formSubmitHandler);
+
+// Попап добавления
+
+let addElement = document.querySelector(".profile__addition");
+let popupAdd = document.querySelector(".popup_add");
+let closedAdd = popupAdd.querySelector(".popup__close");
+let createAdd = popupAdd.querySelector(".popup__create");
+
+function openAdd() {
+  popupAdd.classList.add("popup_opened");
+}
+
+function closeAdd() {
+  popupAdd.classList.remove("popup_opened");
+}
+
+addElement.addEventListener("click", openAdd);
+closedAdd.addEventListener("click", closeAdd);
+
+// Добавление новой карточки
+
+// TODO Не распознается value о названии и ссылке
+// TODO Не очищаютя поля заполнения при создании и закрытии
+const cardTemplate = document.querySelector("#new-card").content;
+let elements = document.querySelector(".elements");
+
+function formSubmitAddition(evt) {
+  evt.preventDefault();
+  const cardElement = cardTemplate.cloneNode(true);
+  let cardImage = cardElement.querySelector(".elements__image").src;
+  let cardPlace = cardElement.querySelector(".elements__place").textContent;
+
+  let placeName = addElement.querySelector(".popup__input_value_name");
+  let placeLink = addElement.querySelector(".popup__input_value_place-link");
+
+  console.log(placeLink);
+  console.log(placeName);
+
+  cardImage = placeLink;
+  cardPlace = placeName;
+  elements.prepend(cardElement);
+  closeAdd();
+}
+
+createAdd.addEventListener("click", formSubmitAddition);
+
+
+// Появление/исчезновение лайка и удаление карточки
+
+// TODO Не работает для новых карточек
+const cardElement = Array.from(elements.querySelectorAll(".elements__card"));
+
+cardElement.forEach( function (item) {
+  item
+  .querySelector(".elements__like")
+  .addEventListener("click", function (evt) {
+    evt.target.classList.toggle("elements__like_active");
+  });
+
+  item
+  .querySelector(".elements__delete")
+  .addEventListener("click", function (evt) {
+     evt.target.closest(".elements__card").remove();
+  });
+});

@@ -1,0 +1,12 @@
+.popup__create {
+  width: 83%;
+  height: 50px;
+  margin: 48px auto 37px;
+  background-color: black;
+  color: white;
+  cursor: pointer;
+}
+
+.popup__create:hover {
+  opacity: 0.8;
+}

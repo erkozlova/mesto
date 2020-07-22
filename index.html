@@ -28,49 +28,55 @@
       <section class="elements">
         <div class="elements__card">
           <img class="elements__image" src="images/kirill-pershin-1088404-unsplash.png" alt="Карачаевск">
+          <button class="elements__delete" type="button"></button>
           <div class="elements__info">
             <h2 class="elements__place">Карачаевск</h2>
-            <button class="elements__like" type="button"><img src="./images/like.svg" alt="Нравится" ></button>
+            <button class="elements__like" type="button"></button>
           </div>
         </div>
 
         <div class="elements__card">
           <img class="elements__image" src="images/kirill-pershin-1404681-unsplash.png" alt="Гора Эльбрус">
+          <button class="elements__delete" type="button"></button>
           <div class="elements__info">
             <h2 class="elements__place">Гора Эльбрус</h2>
-            <button class="elements__like" type="button"><img src="./images/like.svg" alt="Нравится"></button>
+            <button class="elements__like" type="button"></button>
           </div>
         </div>
 
         <div class="elements__card">
           <img class="elements__image" src="images/kirill-pershin-1556355-unsplash.png" alt="Домбай">
+          <button class="elements__delete" type="button"></button>
           <div class="elements__info">
             <h2 class="elements__place">Домбай</h2>
-            <button class="elements__like" type="button"><img src="./images/like.svg" alt="Нравится"></button>
+            <button class="elements__like" type="button"></button>
           </div>
         </div>
 
         <div class="elements__card">
           <img class="elements__image" src="images/kirill-pershin-1404681-unsplash.png" alt="Гора Эльбрус">
+          <button class="elements__delete" type="button"></button>
           <div class="elements__info">
             <h2 class="elements__place">Гора Эльбрус</h2>
-            <button class="elements__like" type="button"><img src="./images/like.svg" alt="Нравится"></button>
+            <button class="elements__like" type="button"></button>
           </div>
         </div>
 
         <div class="elements__card">
           <img class="elements__image" src="images/kirill-pershin-1556355-unsplash.png" alt="Домбай">
+          <button class="elements__delete" type="button"></button>
           <div class="elements__info">
             <h2 class="elements__place">Домбай</h2>
-            <button class="elements__like" type="button"><img src="./images/like.svg" alt="Нравится"></button>
+            <button class="elements__like" type="button"></button>
           </div>
         </div>
 
         <div class="elements__card">
           <img class="elements__image" src="images/kirill-pershin-1088404-unsplash.png" alt="Карачаево-Черкесия">
+          <button class="elements__delete" type="button"></button>
           <div class="elements__info">
             <h2 class="elements__place">Карачаево-Черкесия</h2>
-            <button class="elements__like" type="button"><img src="./images/like.svg" alt="Нравится"></button>
+            <button class="elements__like" type="button"></button>
           </div>
         </div>
       </section>
@@ -80,7 +86,8 @@
         <p class="footer__text">&copy; 2020 Mesto Russia</p>
       </footer>
 
-      <section class="popup">
+      <!-- Попап редактирования профиля -->
+      <section class="popup popup_edit">
           <form class="popup__form" name="author-info">
             <h3 class="popup__title">Редактировать профиль</h3>
             <input class="popup__input popup__input_value_name" type="text" name="author-name">
@@ -89,6 +96,35 @@
             <button class="popup__close" type="button"><img src="./images/close-icon.svg" alt="Зактрыть"></button>
           </form>
       </section>
+
+      <!-- Попап добавления карточки -->
+      <section class="popup popup_add">
+        <form class="popup__form" name="author-info">
+          <h3 class="popup__title">Новое место</h3>
+          <input class="popup__input popup__input_value_name" type="text" name="place-name" placeholder="Название">
+          <input class="popup__input popup__input_value_place-link" type="text" name="place-link" placeholder="Ссылка на картинку">
+          <input class="popup__create" type="submit" value="Создать">
+          <button class="popup__close" type="button"><img src="./images/close-icon.svg" alt="Зактрыть"></button>
+        </form>
+      </section>
+
+      <!-- Попап увеличения картинки -->
+      <section class="popup popup_photo">
+        <img class="popup__image" src="" alt="Полная картинка">
+        <button class="popup__close" type="button"><img src="./images/close-icon.svg" alt="Зактрыть"></button>
+        <h3 class="popup__title"></h3>
+      </section>
+
+      <template id="new-card">
+        <div class="elements__card">
+          <img class="elements__image" src="" alt="Фотография">
+          <button class="elements__delete" type="button"></button>
+          <div class="elements__info">
+            <h2 class="elements__place"></h2>
+            <button class="elements__like" type="button"></button>
+          </div>
+        </div>
+      </template>
     <script src="./scripts/script.js"></script>
   </body>
 </html>
