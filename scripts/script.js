@@ -1,100 +1,170 @@
+// Вставка изначальных карточек на страницу
+const initialCards = [
+  {
+    name: "Архыз",
+    link:
+      "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg",
+  },
+  {
+    name: "Челябинская область",
+    link:
+      "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg",
+  },
+  {
+    name: "Иваново",
+    link:
+      "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg",
+  },
+  {
+    name: "Камчатка",
+    link:
+      "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg",
+  },
+  {
+    name: "Холмогорский район",
+    link:
+      "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg",
+  },
+  {
+    name: "Байкал",
+    link:
+      "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg",
+  },
+];
+
+const cardTemplate = document.querySelector("#new-card").content;
+const elements = document.querySelector(".elements");
+
+initialCards.forEach(function (item) {
+  const cardElement = cardTemplate.cloneNode(true);
+  cardElement.querySelector(".elements__image").src = item.link;
+  cardElement.querySelector(".elements__place").textContent = item.name;
+  elements.append(cardElement);
+});
+
+// Функции открытия/закрытия
+
+const openPopup = (item) => () => {
+  item.classList.add("popup_opened");
+  setTimeout(() => item.classList.add("popup_visible"), 0);
+};
+
+const closePopup = (item) => () => {
+  item.classList.remove("popup_visible");
+  setTimeout(() => item.classList.remove("popup_opened"), 250);
+};
+
+//Функция открытия полной картинки
+ 
+function openFullImage(item) {
+  item.querySelector(".elements__image").addEventListener("click", function () {
+    openPopup(popupPhoto)();
+    popupPhoto.querySelector(".popup__fullimage").src = item.querySelector(
+      ".elements__image"
+    ).src;
+    popupPhoto.querySelector(
+      ".popup__subtitle"
+    ).textContent = item.querySelector(".elements__place").textContent;
+    popupPhoto
+      .querySelector(".popup__close")
+      .addEventListener("click", function () {
+        closePopup(popupPhoto)();
+      });
+  });
+}
+
 // Попап редактирования
 
-let profileName = document.querySelector(".profile__name");
-let profileDescription = document.querySelector(".profile__description");
+const profileName = document.querySelector(".profile__name");
+const profileDescription = document.querySelector(".profile__description");
 
-let editorElement = document.querySelector(".profile__editor");
-let popupEdit = document.querySelector(".popup_edit");
-let closedEdit = popupEdit.querySelector(".popup__close");
+const editorElement = document.querySelector(".profile__editor");
+const popupEdit = document.querySelector(".popup_edit");
+const closedEdit = popupEdit.querySelector(".popup__close");
 
-let popupName = popupEdit.querySelector(".popup__input_value_name");
-let popupDescription = popupEdit.querySelector(
+const popupName = popupEdit.querySelector(".popup__input_value_name");
+const popupDescription = popupEdit.querySelector(
   ".popup__input_value_description"
 );
-let popupEditForm = popupEdit.querySelector(".popup__form");
-
-function openEdit() {
-  popupEdit.classList.add("popup_opened");
-  popupName.value = profileName.textContent;
-  popupDescription.value = profileDescription.textContent;
-}
-
-function closeEdit() {
-  popupEdit.classList.remove("popup_opened");
-}
+const popupEditForm = popupEdit.querySelector(".popup__form");
 
 function formSubmitHandler(evt) {
   evt.preventDefault();
   profileName.textContent = popupName.value;
   profileDescription.textContent = popupDescription.value;
-  closeEdit();
+  closePopup(popupEdit)();
 }
 
-editorElement.addEventListener("click", openEdit);
-closedEdit.addEventListener("click", closeEdit);
+editorElement.addEventListener("click", function () {
+  openPopup(popupEdit)();
+  popupName.value = profileName.textContent;
+  popupDescription.value = profileDescription.textContent;
+});
+
+closedEdit.addEventListener("click", closePopup(popupEdit));
 popupEditForm.addEventListener("submit", formSubmitHandler);
 
 // Попап добавления
 
-let addElement = document.querySelector(".profile__addition");
-let popupAdd = document.querySelector(".popup_add");
-let closedAdd = popupAdd.querySelector(".popup__close");
-let createAdd = popupAdd.querySelector(".popup__create");
+const addElement = document.querySelector(".profile__addition");
+const popupAdd = document.querySelector(".popup_add");
+const closedAdd = popupAdd.querySelector(".popup__close");
+const createAdd = popupAdd.querySelector(".popup__create");
 
-function openAdd() {
-  popupAdd.classList.add("popup_opened");
-}
-
-function closeAdd() {
-  popupAdd.classList.remove("popup_opened");
-}
-
-addElement.addEventListener("click", openAdd);
-closedAdd.addEventListener("click", closeAdd);
+addElement.addEventListener("click", openPopup(popupAdd));
+closedAdd.addEventListener("click", closePopup(popupAdd));
 
 // Добавление новой карточки
 
-// TODO Не распознается value о названии и ссылке
-// TODO Не очищаютя поля заполнения при создании и закрытии
-const cardTemplate = document.querySelector("#new-card").content;
-let elements = document.querySelector(".elements");
-
 function formSubmitAddition(evt) {
   evt.preventDefault();
+
   const cardElement = cardTemplate.cloneNode(true);
-  let cardImage = cardElement.querySelector(".elements__image").src;
-  let cardPlace = cardElement.querySelector(".elements__place").textContent;
 
-  let placeName = addElement.querySelector(".popup__input_value_name");
-  let placeLink = addElement.querySelector(".popup__input_value_place-link");
+  cardElement.querySelector(".elements__image").src = popupAdd.querySelector(
+    ".popup__input_value_place-link"
+  ).value;
+  cardElement.querySelector(
+    ".elements__place"
+  ).textContent = popupAdd.querySelector(".popup__input_value_name").value;
 
-  console.log(placeLink);
-  console.log(placeName);
+  popupAdd.querySelector(".popup__input_value_name").value = "";
+  popupAdd.querySelector(".popup__input_value_place-link").value = "";
 
-  cardImage = placeLink;
-  cardPlace = placeName;
   elements.prepend(cardElement);
-  closeAdd();
+  LikeDeleteButtons(elements.firstElementChild);
+  openFullImage(elements.firstElementChild);
+  closePopup(popupAdd)();
 }
 
 createAdd.addEventListener("click", formSubmitAddition);
 
-
 // Появление/исчезновение лайка и удаление карточки
 
-// TODO Не работает для новых карточек
+function LikeDeleteButtons(item) {
+  item
+    .querySelector(".elements__like")
+    .addEventListener("click", function (evt) {
+      evt.target.classList.toggle("elements__like_active");
+    });
+
+  item
+    .querySelector(".elements__delete")
+    .addEventListener("click", function (evt) {
+      evt.target.closest(".elements__card").remove();
+    });
+}
+
 const cardElement = Array.from(elements.querySelectorAll(".elements__card"));
 
-cardElement.forEach( function (item) {
-  item
-  .querySelector(".elements__like")
-  .addEventListener("click", function (evt) {
-    evt.target.classList.toggle("elements__like_active");
-  });
+cardElement.forEach(function (item) {
+  LikeDeleteButtons(item);
+});
 
-  item
-  .querySelector(".elements__delete")
-  .addEventListener("click", function (evt) {
-     evt.target.closest(".elements__card").remove();
-  });
+// Попап открытия картинки
+
+const popupPhoto = document.querySelector(".popup_photo");
+
+cardElement.forEach(function (item) {
+  openFullImage(item);
 });

@@ -39,3 +39,6 @@
 @import url(../blocks/popup/__input/_value/_name/popup__input_value_name.css);
 
 @import url(../blocks/popup/__create/popup__create.css);
+@import url(../blocks/popup/__container/popup__container.css);
+@import url(../blocks/popup/__subtitle/popup__subtitle.css);
+@import url(../blocks/popup/__fullimage/popup__fullimage.css);

@@ -8,6 +8,7 @@
   background-color: rgba(0,0,0,0);
   border:none;
   background-repeat: no-repeat;
+  z-index: 10;
 }
 
 .elements__delete:hover {
