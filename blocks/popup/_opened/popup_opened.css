@@ -1,16 +1,4 @@
-@keyframes popup-open {
-  from {
-    opacity: 0%;
-  }
-  to {
-    opacity: 100%;
-  }
-}
-
-.popup_visible {
-  opacity: 1;
-}
-
 .popup_opened {
-  display: flex;
+  visibility: visible;
+  opacity: 1;
 }
