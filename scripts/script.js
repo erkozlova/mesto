@@ -65,7 +65,7 @@ function getCardElement(item) {
   cardElement.querySelector(".elements__place").textContent = item.name;
 
   cardElement.querySelector(".elements__like").addEventListener('click', (evt) => likeButton(evt));
-  cardElement.querySelector(".elements__delete").addEventListener('click', (evt) => deleteButton(evt)); vbp n[9]
+  cardElement.querySelector(".elements__delete").addEventListener('click', (evt) => deleteButton(evt));
   cardElement.querySelector(".elements__image").addEventListener('click', () => openFullImage(item));
 
   return cardElement;
