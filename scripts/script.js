@@ -50,7 +50,6 @@ const addElement = document.querySelector(".profile__addition");
 const popupAdd = document.querySelector(".popup_add");
 const closedAdd = popupAdd.querySelector(".popup__close");
 const createAdd = popupAdd.querySelector(".popup__create");
-let cardElements;
 const popupPhoto = document.querySelector(".popup_photo");
 
 const cardList = document.querySelector(".elements__list");
@@ -61,11 +60,14 @@ const closedFullimage = popupPhoto.querySelector(".popup__close");
 
 function getCardElement(item) {
   const cardElement = cardTemplate.cloneNode(true);
+
   cardElement.querySelector(".elements__image").src = item.link;
   cardElement.querySelector(".elements__place").textContent = item.name;
-  LikeButton(cardElement);
-  DeleteButton(cardElement);
-  openFullImage.bind(cardElement)(item);
+
+  cardElement.querySelector(".elements__like").addEventListener('click', (evt) => likeButton(evt));
+  cardElement.querySelector(".elements__delete").addEventListener('click', (evt) => deleteButton(evt)); vbp n[9]
+  cardElement.querySelector(".elements__image").addEventListener('click', () => openFullImage(item));
+
   return cardElement;
 }
 
@@ -93,30 +95,21 @@ function formSubmitAddition(evt) {
 
 // Появление/исчезновение лайка и удаление карточки
 
-function LikeButton(item) {
-  item
-    .querySelector(".elements__like")
-    .addEventListener("click", function (evt) {
-      evt.target.classList.toggle("elements__like_active");
-    });
+function likeButton(evt) {
+  evt.target.classList.toggle("elements__like_active");
 }
 
-function DeleteButton(item) {
-  item
-    .querySelector(".elements__delete")
-    .addEventListener("click", function (evt) {
-      evt.target.closest(".elements__card").remove();
-    });
+function deleteButton(evt) {
+  evt.target.closest(".elements__card").remove();
 }
 
 // Открытие попапа с полной картинкой
 
 function openFullImage(item) {
-  this.querySelector(".elements__image").addEventListener("click", function () {
-    openPopup(popupPhoto);
-    popupPhoto.querySelector(".popup__fullimage").src = item.link;
-    popupPhoto.querySelector(".popup__subtitle").textContent = item.name;
-  });
+      openPopup(popupPhoto);
+
+      popupPhoto.querySelector(".popup__fullimage").src = item.link;
+      popupPhoto.querySelector(".popup__subtitle").textContent = item.name;
 }
 
 // Функции открытия/закрытия
@@ -133,8 +126,10 @@ const closePopup = (item) => {
 
 function formSubmitHandler(evt) {
   evt.preventDefault();
+
   profileName.textContent = popupName.value;
   profileDescription.textContent = popupDescription.value;
+
   closePopup(popupEdit);
 }
 
@@ -148,6 +143,7 @@ closedFullimage.addEventListener("click", () => {
 
 editorElement.addEventListener("click", () => {
   openPopup(popupEdit);
+
   popupName.value = profileName.textContent;
   popupDescription.value = profileDescription.textContent;
 });
@@ -172,21 +168,5 @@ createAdd.addEventListener("click", formSubmitAddition);
 // Добавление изначальных карточек на страницу
 
 initialCards.forEach(function (item) {
-  const cardElement = cardTemplate.cloneNode(true);
-  cardElement.querySelector(".elements__image").src = item.link;
-  cardElement.querySelector(".elements__place").textContent = item.name;
-  cardList.append(cardElement);
-});
-
-// Обработка событий для первоначальных карточек
-
-Array.from(elements.querySelectorAll(".elements__card")).forEach(function (
-  item
-) {
-  LikeButton(item);
-  DeleteButton(item);
-  openFullImage.bind(item)({
-    link: item.querySelector(".elements__image").src,
-    name: item.querySelector(".elements__place").textContent,
-  });
+  renderCard(item);
 });
