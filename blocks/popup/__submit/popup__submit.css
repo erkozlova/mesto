@@ -1,12 +1,13 @@
-.popup__create {
+.popup__submit {
   width: 83%;
   height: 50px;
   margin: 48px auto 37px;
+  border-radius: 2px;
   background-color: black;
   color: white;
   cursor: pointer;
 }
 
-.popup__create:hover {
-  opacity: 0.8;
+.popup__submit:hover {
+  opacity: .8;
 }

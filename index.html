@@ -1,82 +1,132 @@
 <!DOCTYPE html>
 <html lang="ru">
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./pages/index.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./pages/index.css" />
     <title>Mesto</title>
   </head>
   <body class="page">
-      <header class="header">
-        <img class="header__logo" src="./images/logo.svg" alt="Логотип">
-      </header>
+    <header class="header">
+      <img class="header__logo" src="./images/logo.svg" alt="Логотип" />
+    </header>
 
     <main>
       <section class="profile">
-        <img class="profile__avatar" src="images/avatar.jpg" alt="Аватар">
+        <img class="profile__avatar" src="images/avatar.jpg" alt="Аватар" />
         <div class="profile__info">
           <div class="profile__name-container">
             <h1 class="profile__name">Жак-Ив Кусто</h1>
-            <button class="profile__editor" type="button"><img src="images/editor.svg" alt="Кнопка редактирования"></button>
+            <button class="profile__editor" type="button">
+              <img src="images/editor.svg" alt="Кнопка редактирования" />
+            </button>
           </div>
           <p class="profile__description">Исследователь океана</p>
         </div>
-        <button class="profile__addition" type="button"><img class="profile__plus" src="images/plus.svg" alt="Кнопка добавления"></button>
+        <button class="profile__addition" type="button">
+          <img
+            class="profile__plus"
+            src="images/plus.svg"
+            alt="Кнопка добавления"
+          />
+        </button>
       </section>
-
 
       <section class="elements">
         <ul class="elements__list"></ul>
       </section>
     </main>
 
-      <footer class="footer">
-        <p class="footer__text">&copy; 2020 Mesto Russia</p>
-      </footer>
+    <footer class="footer">
+      <p class="footer__text">&copy; 2020 Mesto Russia</p>
+    </footer>
 
-      <!-- Попап редактирования профиля -->
-      <section class="popup popup_edit">
-          <form class="popup__form" name="author-info">
-            <h3 class="popup__title">Редактировать профиль</h3>
-            <input class="popup__input popup__input_value_name" type="text" name="author-name">
-            <input class="popup__input popup__input_value_description" type="text" name="author-description">
-            <input class="popup__save" type="submit" value="Сохранить">
-            <button class="popup__close" type="button"></button>
-          </form>
-      </section>
+    <!-- Попап редактирования профиля -->
+    <section class="popup popup_edit">
+      <form class="popup__form" name="author" novalidate>
+        <h3 class="popup__title">Редактировать профиль</h3>
+        <label class="popup__label">
+          <input
+            class="popup__input popup__input_value_name"
+            id="author-name"
+            type="text"
+            name="name"
+            minlength="2"
+            maxlength="40"
+            required
+          />
+          <span class="popup__error" id="author-name-error">Текст ошибки</span>
+        </label>
+        <label class="popup__label">
+          <input
+            class="popup__input popup__input_value_description"
+            id="author-description"
+            type="text"
+            name="description"
+            minlength="2"
+            maxlength="200"
+            required
+          />
+          <span class="popup__error" id="author-description-error">Текст ошибки</span>
+        </label>
+        <input class="popup__submit" type="submit" value="Сохранить" />
+        <button class="popup__close" type="button"></button>
+      </form>
+    </section>
 
-      <!-- Попап добавления карточки -->
-      <section class="popup popup_add">
-        <form class="popup__form" name="author-info">
-          <h3 class="popup__title">Новое место</h3>
-          <input class="popup__input popup__input_value_name" type="text" name="place-name" placeholder="Название">
-          <input class="popup__input popup__input_value_place-link" type="text" name="place-link" placeholder="Ссылка на картинку">
-          <input class="popup__create" type="submit" value="Создать">
-          <button class="popup__close" type="button"></button>
-        </form>
-      </section>
+    <!-- Попап добавления карточки -->
+    <section class="popup popup_add">
+      <form class="popup__form" name="card" novalidate>
+        <h3 class="popup__title">Новое место</h3>
+        <label class="popup__label">
+          <input
+            class="popup__input popup__input_value_name"
+            id="place-name"
+            type="text"
+            name="name"
+            placeholder="Название"
+            minlength="1"
+            maxlength="30"
+            required
+          />
+          <span class="popup__error" id="place-name-error">Текст ошибки</span>
+        </label>
+        <label class="popup__label">
+          <input
+            class="popup__input popup__input_value_place-link"
+            id="place-link"
+            type="url"
+            name="link"
+            placeholder="Ссылка на картинку"
+            required
+          />
+          <span class="popup__error" id="place-link-error">Текст ошибки</span>
+        </label>
+        <input class="popup__submit" type="submit" value="Создать" />
+        <button class="popup__close" type="button"></button>
+      </form>
+    </section>
 
-      <!-- Попап увеличения картинки -->
-      <section class="popup popup_photo">
-        <div class="popup__container">
-          <img class="popup__fullimage" alt="Полная картинка">
-          <button class="popup__close" type="button"></button>
-          <h3 class="popup__subtitle "></h3>
+    <!-- Попап увеличения картинки -->
+    <section class="popup popup_photo">
+      <div class="popup__container">
+        <img class="popup__fullimage" alt="Полная картинка" />
+        <button class="popup__close" type="button"></button>
+        <h3 class="popup__subtitle"></h3>
+      </div>
+    </section>
+
+    <!-- Шаблон карточки -->
+    <template id="new-card">
+      <li class="elements__card">
+        <img class="elements__image" alt="Фотография места" />
+        <button class="elements__delete" type="button"></button>
+        <div class="elements__info">
+          <h2 class="elements__place"></h2>
+          <button class="elements__like" type="button"></button>
         </div>
-      </section>
-
-
-      <!-- Шаблон карточки -->
-      <template id="new-card">
-        <li class="elements__card">
-          <img class="elements__image" alt="Фотография места">
-          <button class="elements__delete" type="button"></button>
-          <div class="elements__info">
-            <h2 class="elements__place"></h2>
-            <button class="elements__like" type="button"></button>
-          </div>
-        </li>
-      </template>
+      </li>
+    </template>
     <script src="./scripts/script.js"></script>
   </body>
 </html>
