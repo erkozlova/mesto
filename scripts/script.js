@@ -1,8 +1,3 @@
-// TODO Отправляются не валидные данные
-// TODO Статус кнопки не сбрасывается после закрытия формы
-// TODO Ошибки не сбрысываются после закрытия формы
-// TODO В самом начале кнопки неактивны в любои случае. 
-
 const initialCards = [
   {
     name: "Архыз",
@@ -112,8 +107,7 @@ const toggleButtonState = (inputList, buttonElement) => {
 
 // Функция подключения слушателей для формы
 
-const setEventListeners = (formElement) => {
-  const inputList = Array.from(formElement.querySelectorAll('.popup__input'));
+const setEventListeners = (formElement, inputList) => {
   const buttonElement = formElement.querySelector('.popup__submit');
   
   toggleButtonState(inputList, buttonElement); 
@@ -133,16 +127,22 @@ const enableValidation = () => {
   const formList = Array.from(document.querySelectorAll('.popup__form'));
 
   formList.forEach((formElement) => {
+    const inputList = Array.from(formElement.querySelectorAll('.popup__input'));
     formElement.addEventListener('submit', function (evt) {
       evt.preventDefault();
+      if (formElement === popupEditForm && !hasInvalidInput(inputList)) {
+        formSubmitHandler();
+      };
+      if (formElement === popupAdd.querySelector('.popup__form') && !hasInvalidInput(inputList)) {
+        formSubmitAddition();
+      };
     });
 
-    setEventListeners(formElement);
+    setEventListeners(formElement, inputList);
   });
 };
 
 enableValidation();
-
 
 
 
@@ -222,10 +222,36 @@ function formSubmitHandler() {
   closePopup(popupEdit);
 }
 
+// Функция закрытия форм кликом на оверлей
+
+function popupOverlay (popup) {
+  popup.addEventListener('click', function (evt) {
+    if(!popup.querySelector('.popup__form').contains(evt.target)) {
+      closePopup(popup);
+    }
+  });
+}
+
+// Функция закрытия формы нажатием на ESC
+
+function popupEsc (popup) {
+  popup.addEventListener('keydown', function (evt) {
+    if(evt.keyCode === 27) {
+      closePopup(popup);
+    }
+  });
+}
+
 // Обарботка попапа полной картинки
 
 closedFullimage.addEventListener('click', () => {
   closePopup(popupPhoto);
+});
+
+popupPhoto.addEventListener('click', function (evt) {
+  if(!popupPhoto.querySelector('.popup__container').contains(evt.target)) {
+    closePopup(popupPhoto);
+  }
 });
 
 // Обработка попапа редактирования
@@ -233,28 +259,44 @@ closedFullimage.addEventListener('click', () => {
 editorElement.addEventListener('click', () => {
   openPopup(popupEdit);
 
+  popupEdit.querySelector('.popup__submit').classList.remove('popup__submit_inactive');
   popupName.value = profileName.textContent;
   popupDescription.value = profileDescription.textContent;
 });
 
 closedEdit.addEventListener('click', () => {
   closePopup(popupEdit);
+  const inputEditArray = Array.from(popupEdit.querySelectorAll('.popup__input'));
+  inputEditArray.forEach((inputEdit) =>{
+    hideInputError(popupEdit, inputEdit);
+  });
+  popupEdit.querySelector('.popup__submit').classList.remove('popup__submit_inactive');
 });
 
-popupEditForm.addEventListener('submit', formSubmitHandler);
+popupOverlay(popupEdit);
+
+function buttonFirstCondition (){
+  popupAdd.querySelector('.popup__submit').classList.add('popup__submit_inactive');
+}
 
 // Обработка попапа добавления
 
 addElement.addEventListener('click', () => {
+  buttonFirstCondition();
   openPopup(popupAdd);
 });
 closedAdd.addEventListener('click', () => {
   closePopup(popupAdd);
+  const inputAddArray = Array.from(popupAdd.querySelectorAll('.popup__input'));
+  inputAddArray.forEach((inputAdd) =>{
+    hideInputError(popupAdd, inputAdd);
+  });
+  buttonFirstCondition();
   popupAddName.value = "";
   popupAddLink.value = "";
 });
 
-popupAdd.querySelector('.popup__form').addEventListener('submit', formSubmitAddition); 
+popupOverlay(popupAdd);
 
 
 // Добавление изначальных карточек на страницу
@@ -263,4 +305,11 @@ initialCards.forEach(function (item) {
   renderCard(item);
 });
 
-
+popupEsc(popupAdd);
+document.addEventListener('keydown', function (evt) {
+  if(evt.keyCode === 27 ) {
+    closePopup(popupEdit);
+    closePopup(popupAdd);
+    closePopup(popupPhoto);
+  }
+});
