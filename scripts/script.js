@@ -59,93 +59,6 @@ const closedAdd = popupAdd.querySelector(".popup__close");
 
 const closedFullimage = popupPhoto.querySelector(".popup__close");
 
-// Функция добавления сообщения ошибки
-
-const showInputError = (formElement, inputElement, errorMessage) => {
-  const errorElement = formElement.querySelector(`#${inputElement.id}-error`);
-  inputElement.classList.add('popup__input_error');
-  errorElement.textContent = errorMessage;
-  errorElement.classList.add('popup__error_active');
-};
-
-// Функции удаления сообщения об ошибке
-
-const hideInputError = (formElement, inputElement) => {
-  const errorElement = formElement.querySelector(`#${inputElement.id}-error`);
-  inputElement.classList.remove('popup__input_error');
-  errorElement.classList.remove('popup__error_active');
-  errorElement.textContent = '';
-};
-
-// Проверка валидности инпутов для сообщения о ошибке
-
-const checkInputValidity = (formElement, inputElement) => {
-  if(!inputElement.validity.valid) {
-    showInputError(formElement, inputElement, inputElement.validationMessage);
-  } else {
-    hideInputError(formElement, inputElement);
-  }
-};
-
-// Проверка валидности инпутов для статуса кнопки
-
-const hasInvalidInput = (inputList) => {
-  return inputList.some((inputElement) => {
-    return !inputElement.validity.valid;
-  });
-};
-
-// Функция статуса активности кнопки
-
-const toggleButtonState = (inputList, buttonElement) => {
-  if(hasInvalidInput(inputList)){
-    buttonElement.classList.add('popup__submit_inactive');
-  } else {
-    buttonElement.classList.remove('popup__submit_inactive');
-  }
-}
-
-// Функция подключения слушателей для формы
-
-const setEventListeners = (formElement, inputList) => {
-  const buttonElement = formElement.querySelector('.popup__submit');
-  
-  toggleButtonState(inputList, buttonElement); 
-
-  inputList.forEach((inputElement) => {
-    inputElement.addEventListener('input', function () {
-      checkInputValidity(formElement, inputElement);
-      toggleButtonState(inputList, buttonElement);
-    });
-  });
-
-};
-
-// Функция включения валидации
-
-const enableValidation = () => {
-  const formList = Array.from(document.querySelectorAll('.popup__form'));
-
-  formList.forEach((formElement) => {
-    const inputList = Array.from(formElement.querySelectorAll('.popup__input'));
-    formElement.addEventListener('submit', function (evt) {
-      evt.preventDefault();
-      if (formElement === popupEditForm && !hasInvalidInput(inputList)) {
-        formSubmitHandler();
-      };
-      if (formElement === popupAdd.querySelector('.popup__form') && !hasInvalidInput(inputList)) {
-        formSubmitAddition();
-      };
-    });
-
-    setEventListeners(formElement, inputList);
-  });
-};
-
-enableValidation();
-
-
-
 // Функция создания новой карточки
 
 function getCardElement(item) {
@@ -202,10 +115,19 @@ function openFullImage(item) {
   popupPhoto.querySelector(".popup__subtitle").textContent = item.name;
 }
 
+// Функция закрытия попапа нажатие ESC
+
+const popupEsc = (evt, popup) => {
+  if(evt.keyCode === 27 ) {
+    closePopup(popup);
+  }
+}
+
 // Функции открытия/закрытия
 
 const openPopup = (item) => {
   item.classList.add("popup_opened");
+  document.addEventListener('keydown', (evt) => popupEsc(evt, item));
 };
 
 const closePopup = (item) => {
@@ -232,16 +154,6 @@ function popupOverlay (popup) {
   });
 }
 
-// Функция закрытия формы нажатием на ESC
-
-function popupEsc (popup) {
-  popup.addEventListener('keydown', function (evt) {
-    if(evt.keyCode === 27) {
-      closePopup(popup);
-    }
-  });
-}
-
 // Обарботка попапа полной картинки
 
 closedFullimage.addEventListener('click', () => {
@@ -258,7 +170,6 @@ popupPhoto.addEventListener('click', function (evt) {
 
 editorElement.addEventListener('click', () => {
   openPopup(popupEdit);
-
   popupEdit.querySelector('.popup__submit').classList.remove('popup__submit_inactive');
   popupName.value = profileName.textContent;
   popupDescription.value = profileDescription.textContent;
@@ -266,32 +177,17 @@ editorElement.addEventListener('click', () => {
 
 closedEdit.addEventListener('click', () => {
   closePopup(popupEdit);
-  const inputEditArray = Array.from(popupEdit.querySelectorAll('.popup__input'));
-  inputEditArray.forEach((inputEdit) =>{
-    hideInputError(popupEdit, inputEdit);
-  });
-  popupEdit.querySelector('.popup__submit').classList.remove('popup__submit_inactive');
 });
 
 popupOverlay(popupEdit);
 
-function buttonFirstCondition (){
-  popupAdd.querySelector('.popup__submit').classList.add('popup__submit_inactive');
-}
-
 // Обработка попапа добавления
 
 addElement.addEventListener('click', () => {
-  buttonFirstCondition();
   openPopup(popupAdd);
 });
 closedAdd.addEventListener('click', () => {
   closePopup(popupAdd);
-  const inputAddArray = Array.from(popupAdd.querySelectorAll('.popup__input'));
-  inputAddArray.forEach((inputAdd) =>{
-    hideInputError(popupAdd, inputAdd);
-  });
-  buttonFirstCondition();
   popupAddName.value = "";
   popupAddLink.value = "";
 });
@@ -303,13 +199,4 @@ popupOverlay(popupAdd);
 
 initialCards.forEach(function (item) {
   renderCard(item);
-});
-
-popupEsc(popupAdd);
-document.addEventListener('keydown', function (evt) {
-  if(evt.keyCode === 27 ) {
-    closePopup(popupEdit);
-    closePopup(popupAdd);
-    closePopup(popupPhoto);
-  }
 });
