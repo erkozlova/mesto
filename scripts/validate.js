@@ -1,28 +1,28 @@
 // Функция добавления сообщения ошибки
 
-const showInputError = (formElement, inputElement, errorMessage) => {
+const showInputError = (formElement, inputElement, errorMessage, {inputErrorClass, errorClass}) => {
   const errorElement = formElement.querySelector(`#${inputElement.id}-error`);
-  inputElement.classList.add('popup__input_error');
+  inputElement.classList.add(inputErrorClass);
   errorElement.textContent = errorMessage;
-  errorElement.classList.add('popup__error_active');
+  errorElement.classList.add(errorClass);
 };
 
 // Функции удаления сообщения об ошибке
 
-const hideInputError = (formElement, inputElement) => {
+const hideInputError = (formElement, inputElement, {inputErrorClass, errorClass}) => {
   const errorElement = formElement.querySelector(`#${inputElement.id}-error`);
-  inputElement.classList.remove('popup__input_error');
-  errorElement.classList.remove('popup__error_active');
+  inputElement.classList.remove(inputErrorClass);
+  errorElement.classList.remove(errorClass);
   errorElement.textContent = '';
 };
 
 // Проверка валидности инпутов для сообщения о ошибке
 
-const checkInputValidity = (formElement, inputElement) => {
+const checkInputValidity = (formElement, inputElement, {...rest}) => {
   if(!inputElement.validity.valid) {
-    showInputError(formElement, inputElement, inputElement.validationMessage);
+    showInputError(formElement, inputElement, inputElement.validationMessage, rest);
   } else {
-    hideInputError(formElement, inputElement);
+    hideInputError(formElement, inputElement, rest);
   }
 };
 
@@ -36,73 +36,89 @@ const hasInvalidInput = (inputList) => {
 
 // Функция статуса активности кнопки
 
-const toggleButtonState = (inputList, buttonElement) => {
+const toggleButtonState = (inputList, buttonElement, {inactiveButtonClass, ...rest}) => {
   if(hasInvalidInput(inputList)){
-    buttonElement.classList.add('popup__submit_inactive');
+    buttonElement.classList.add(inactiveButtonClass);
   } else {
-    buttonElement.classList.remove('popup__submit_inactive');
+    buttonElement.classList.remove(inactiveButtonClass);
   }
 }
 
 // Функция подключения слушателей для формы
 
-const setEventListeners = (formElement, inputList) => {
-  const buttonElement = formElement.querySelector('.popup__submit');
+const setEventListeners = (formElement, inputList, {submitButtonSelector, ...rest}) => {
+  const buttonElement = formElement.querySelector(submitButtonSelector);
   
-  toggleButtonState(inputList, buttonElement); 
+  toggleButtonState(inputList, buttonElement, rest); 
 
   inputList.forEach((inputElement) => {
     inputElement.addEventListener('input', function () {
-      checkInputValidity(formElement, inputElement);
-      toggleButtonState(inputList, buttonElement);
+      checkInputValidity(formElement, inputElement, rest);
+      toggleButtonState(inputList, buttonElement, rest);
     });
   });
 
 };
 
+// Функция изначального состояния форм
+
+function buttonFirstState ({submitButtonSelector, inactiveButtonClass}){
+  popupAdd.querySelector(submitButtonSelector).classList.add(inactiveButtonClass);
+}
+
+const editBeginState = (inputSelector, {submitButtonSelector, inactiveButtonClass, ...rest}) => {
+  closedEdit.addEventListener('click', () => {
+    const inputEditArray = Array.from(popupEdit.querySelectorAll(inputSelector));
+    const popupButtonSubmit = popupEdit.querySelector(submitButtonSelector);
+    inputEditArray.forEach((inputEdit) =>{
+      hideInputError(popupEdit, inputEdit, rest); 
+    });
+    if(popupButtonSubmit.classList.contains(inactiveButtonClass)){
+      popupButtonSubmit.classList.remove(inactiveButtonClass);
+    }
+  });
+
+  addElement.addEventListener('click', () => {
+    buttonFirstState({submitButtonSelector, inactiveButtonClass}); 
+  });
+
+  closedAdd.addEventListener('click', () => {
+  const inputAddArray = Array.from(popupAdd.querySelectorAll(inputSelector));
+  inputAddArray.forEach((inputAdd) =>{
+    hideInputError(popupAdd, inputAdd, rest); 
+  });
+  buttonFirstState({submitButtonSelector, inactiveButtonClass});
+  });
+};
+
 // Функция включения валидации
 
-const enableValidation = () => {
-  const formList = Array.from(document.querySelectorAll('.popup__form'));
+const enableValidation = ({formSelector, inputSelector, ...rest}) => {
+  const formList = Array.from(document.querySelectorAll(formSelector));
 
   formList.forEach((formElement) => {
-    const inputList = Array.from(formElement.querySelectorAll('.popup__input'));
+    const inputList = Array.from(formElement.querySelectorAll(inputSelector));
     formElement.addEventListener('submit', function (evt) {
       evt.preventDefault();
       if (formElement === popupEditForm && !hasInvalidInput(inputList)) {
         formSubmitHandler();
       };
-      if (formElement === popupAdd.querySelector('.popup__form') && !hasInvalidInput(inputList)) {
+      if (formElement === popupAdd.querySelector(formSelector) && !hasInvalidInput(inputList)) {
         formSubmitAddition();
       };
     });
 
-    setEventListeners(formElement, inputList);
+    setEventListeners(formElement, inputList, rest);
   });
+
+  editBeginState(inputSelector, rest);
 };
 
-enableValidation();
-
-function buttonFirstCondition (){
-  popupAdd.querySelector('.popup__submit').classList.add('popup__submit_inactive');
-}
-
-closedEdit.addEventListener('click', () => {
-  const inputEditArray = Array.from(popupEdit.querySelectorAll('.popup__input'));
-  inputEditArray.forEach((inputEdit) =>{
-    hideInputError(popupEdit, inputEdit);
-  });
-  popupEdit.querySelector('.popup__submit').classList.remove('popup__submit_inactive');
-});
-
-addElement.addEventListener('click', () => {
-  buttonFirstCondition();
-});
-
-closedAdd.addEventListener('click', () => {
-  const inputAddArray = Array.from(popupAdd.querySelectorAll('.popup__input'));
-  inputAddArray.forEach((inputAdd) =>{
-    hideInputError(popupAdd, inputAdd);
-  });
-  buttonFirstCondition();
+enableValidation({
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__submit',
+  inactiveButtonClass: 'popup__submit_inactive',
+  inputErrorClass: 'popup__input_error',
+  errorClass: 'popup__error_active'
 });
