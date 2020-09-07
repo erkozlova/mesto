@@ -57,6 +57,10 @@ const popupAddName = popupAdd.querySelector(".popup__input_value_name");
 const popupAddLink = popupAdd.querySelector(".popup__input_value_place-link");
 const closedAdd = popupAdd.querySelector(".popup__close");
 
+// here
+let popupPhotoLink = popupPhoto.querySelector(".popup__fullimage");
+let popupPhotoSubtitile = popupPhoto.querySelector(".popup__subtitle");
+
 const closedFullimage = popupPhoto.querySelector(".popup__close");
 
 // Функция создания новой карточки
@@ -114,8 +118,8 @@ function deleteButton(evt) {
 function openFullImage(item) {
   openPopup(popupPhoto);
 
-  popupPhoto.querySelector(".popup__fullimage").src = item.link;
-  popupPhoto.querySelector(".popup__subtitle").textContent = item.name;
+  popupPhotoLink.src = item.link;
+  popupPhotoSubtitile.textContent = item.name;
 }
 
 // Функция закрытия попапа нажатие ESC
@@ -142,8 +146,8 @@ const handlePopupOverlayClick = (popup) => (evt) => {
     !popup.querySelector(".popup__form").contains(evt.target)
   ) {
     closePopup(popup);
-  } else {
-    if (!popupPhoto.querySelector(".popup__container").contains(evt.target)) {
+  }  else {
+    if (popup === popupPhoto && !popupPhoto.querySelector(".popup__container").contains(evt.target)) {
       closePopup(popup);
     }
   }
@@ -160,7 +164,6 @@ const openPopup = (item) => {
 const closePopup = (item) => {
   item.classList.remove("popup_opened");
   document.removeEventListener("keydown", popupEsc);
-  item.removeEventListener("click", handlePopupOverlayClick(item));
   if (item === popupAdd) {
     popupAddName.value = "";
     popupAddLink.value = "";
