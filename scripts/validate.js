@@ -62,8 +62,8 @@ const setEventListeners = (formElement, inputList, {submitButtonSelector, ...res
 
 // Функция изначального состояния форм
 
-function buttonFirstState ({submitButtonSelector, inactiveButtonClass}){
-  popupAdd.querySelector(submitButtonSelector).classList.add(inactiveButtonClass);
+function buttonFirstState (popupAddSubmitButton, inactiveButtonClass){
+  popupAddSubmitButton.classList.add(inactiveButtonClass);
 }
 
 const editBeginState = (inputSelector, {submitButtonSelector, inactiveButtonClass, ...rest}) => {
@@ -78,8 +78,10 @@ const editBeginState = (inputSelector, {submitButtonSelector, inactiveButtonClas
     }
   });
 
+  const popupAddSubmitButton = popupAdd.querySelector(submitButtonSelector);
+
   addElement.addEventListener('click', () => {
-    buttonFirstState({submitButtonSelector, inactiveButtonClass}); 
+    buttonFirstState(popupAddSubmitButton, inactiveButtonClass); 
   });
 
   closedAdd.addEventListener('click', () => {
@@ -87,7 +89,7 @@ const editBeginState = (inputSelector, {submitButtonSelector, inactiveButtonClas
   inputAddArray.forEach((inputAdd) =>{
     hideInputError(popupAdd, inputAdd, rest); 
   });
-  buttonFirstState({submitButtonSelector, inactiveButtonClass});
+  buttonFirstState(popupAddSubmitButton, inactiveButtonClass);
   });
 };
 

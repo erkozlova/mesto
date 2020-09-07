@@ -117,9 +117,17 @@ function openFullImage(item) {
 
 // Функция закрытия попапа нажатие ESC
 
-const popupEsc = (evt, popup) => {
+function popupEsc (evt) {
   if(evt.keyCode === 27 ) {
-    closePopup(popup);
+    if(popupAdd.classList.contains('popup_opened')){
+      closePopup(popupAdd);
+    }
+    if(popupEdit.classList.contains('popup_opened')){
+      closePopup(popupEdit);
+    }
+    if(popupPhoto.classList.contains('popup_opened')){
+      closePopup(popupPhoto);
+    }
   }
 }
 
@@ -127,11 +135,16 @@ const popupEsc = (evt, popup) => {
 
 const openPopup = (item) => {
   item.classList.add("popup_opened");
-  document.addEventListener('keydown', (evt) => popupEsc(evt, item));
+  document.addEventListener('keydown', popupEsc);
 };
 
 const closePopup = (item) => {
   item.classList.remove("popup_opened");
+  document.removeEventListener('keydown', popupEsc);
+  if(item === popupAdd){
+    popupAddName.value = "";
+    popupAddLink.value = "";
+  }
 };
 
 // Функция редактирования профиля
@@ -188,8 +201,6 @@ addElement.addEventListener('click', () => {
 });
 closedAdd.addEventListener('click', () => {
   closePopup(popupAdd);
-  popupAddName.value = "";
-  popupAddLink.value = "";
 });
 
 popupOverlay(popupAdd);
