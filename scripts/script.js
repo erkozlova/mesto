@@ -158,7 +158,6 @@ const handlePopupOverlayClick = (popup) => (evt) => {
 const openPopup = (item) => {
   item.classList.add("popup_opened");
   document.addEventListener("keydown", popupEsc);
-  item.addEventListener("click", handlePopupOverlayClick(item));
 };
 
 const closePopup = (item) => {
@@ -181,6 +180,7 @@ function formSubmitHandler() {
 
 // Обарботка попапа полной картинки
 
+popupPhoto.addEventListener("click", handlePopupOverlayClick(popupPhoto));
 closedFullimage.addEventListener("click", () => {
   closePopup(popupPhoto);
 });
@@ -196,6 +196,7 @@ editorElement.addEventListener("click", () => {
   popupDescription.value = profileDescription.textContent;
 });
 
+popupEdit.addEventListener("click", handlePopupOverlayClick(popupEdit));
 closedEdit.addEventListener("click", () => {
   closePopup(popupEdit);
 });
@@ -205,6 +206,8 @@ closedEdit.addEventListener("click", () => {
 addElement.addEventListener("click", () => {
   openPopup(popupAdd);
 });
+
+popupAdd.addEventListener("click", handlePopupOverlayClick(popupAdd));
 closedAdd.addEventListener("click", () => {
   closePopup(popupAdd);
 });
