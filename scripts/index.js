@@ -1,3 +1,6 @@
+import { Card } from "./Card.js";
+import { FormValidator } from "./FormValidator.js";
+
 const initialCards = [
   {
     name: "Архыз",
@@ -31,9 +34,6 @@ const initialCards = [
   },
 ];
 
-const cardTemplate = document.querySelector("#new-card").content;
-
-const elements = document.querySelector(".elements");
 const cardList = document.querySelector(".elements__list");
 
 const profileName = document.querySelector(".profile__name");
@@ -53,73 +53,39 @@ const popupDescription = popupEdit.querySelector(
 );
 const closedEdit = popupEdit.querySelector(".popup__close");
 
+const popupAddForm = popupAdd.querySelector('.popup__form');
 const popupAddName = popupAdd.querySelector(".popup__input_value_name");
 const popupAddLink = popupAdd.querySelector(".popup__input_value_place-link");
 const closedAdd = popupAdd.querySelector(".popup__close");
 
-// here
 let popupPhotoLink = popupPhoto.querySelector(".popup__fullimage");
 let popupPhotoSubtitile = popupPhoto.querySelector(".popup__subtitle");
 
 const closedFullimage = popupPhoto.querySelector(".popup__close");
 
-// Функция создания новой карточки
-
-function getCardElement(item) {
-  const cardElement = cardTemplate.cloneNode(true);
-  const cardElementImage = cardElement.querySelector(".elements__image");
-
-  cardElementImage.src = item.link;
-  cardElement.querySelector(".elements__place").textContent = item.name;
-
-  cardElement
-    .querySelector(".elements__like")
-    .addEventListener("click", (evt) => likeButton(evt));
-  cardElement
-    .querySelector(".elements__delete")
-    .addEventListener("click", (evt) => deleteButton(evt));
-  cardElementImage.addEventListener("click", () => openFullImage(item));
-
-  return cardElement;
-}
-
 // Функция добавления новой карточки
 
 function renderCard(item) {
-  cardList.prepend(getCardElement(item));
+  cardList.prepend(item);
 }
 
 // Функция отправки формы новой карточки
 
 function formSubmitAddition() {
-  renderCard({
-    name: popupAddName.value,
-    link: popupAddLink.value,
-  });
+  const card = new Card(
+    {
+      name: popupAddName.value,
+      link: popupAddLink.value,
+    },
+    "#new-card"
+  );
+
+  renderCard(card.generateCard());
 
   popupAddName.value = "";
   popupAddLink.value = "";
 
   closePopup(popupAdd);
-}
-
-// Появление/исчезновение лайка и удаление карточки
-
-function likeButton(evt) {
-  evt.target.classList.toggle("elements__like_active");
-}
-
-function deleteButton(evt) {
-  evt.target.closest(".elements__card").remove();
-}
-
-// Открытие попапа с полной картинкой
-
-function openFullImage(item) {
-  openPopup(popupPhoto);
-
-  popupPhotoLink.src = item.link;
-  popupPhotoSubtitile.textContent = item.name;
 }
 
 // Функция закрытия попапа нажатие ESC
@@ -146,8 +112,11 @@ const handlePopupOverlayClick = (popup) => (evt) => {
     !popup.querySelector(".popup__form").contains(evt.target)
   ) {
     closePopup(popup);
-  }  else {
-    if (popup === popupPhoto && !popupPhoto.querySelector(".popup__container").contains(evt.target)) {
+  } else {
+    if (
+      popup === popupPhoto &&
+      !popupPhoto.querySelector(".popup__container").contains(evt.target)
+    ) {
       closePopup(popup);
     }
   }
@@ -215,5 +184,35 @@ closedAdd.addEventListener("click", () => {
 // Добавление изначальных карточек на страницу
 
 initialCards.forEach(function (item) {
-  renderCard(item);
+  const card = new Card(item, "#new-card");
+
+  renderCard(card.generateCard());
 });
+
+const obj = {
+  formSelector: ".popup__form",
+  inputSelector: ".popup__input",
+  submitButtonSelector: ".popup__submit",
+  inactiveButtonClass: "popup__submit_inactive",
+  inputErrorClass: "popup__input_error",
+  errorClass: "popup__error_active",
+};
+
+const formList = Array.from(document.querySelectorAll(obj.formSelector));
+
+formList.forEach((form) => {
+  const formValid = new FormValidator(obj, form);
+  formValid.enableValidation();
+});
+
+export {
+  openPopup,
+  popupPhoto,
+  popupPhotoLink,
+  popupPhotoSubtitile,
+  popupEditForm,
+  popupAddForm,
+  formSubmitHandler,
+  formSubmitAddition,
+  addElement
+};
