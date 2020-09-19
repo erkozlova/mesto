@@ -1,4 +1,4 @@
- import {openPopup, popupPhoto, popupPhotoLink, popupPhotoSubtitile} from './index.js';
+ import {popupPhoto, popupPhotoLink, popupPhotoSubtitle, openPopup} from './utils.js';
 
 export class Card {
   constructor(data, cardSelector) {
@@ -20,13 +20,13 @@ export class Card {
 
   // Появление/исчезновение лайка и удаление карточки
 
-  _likeButton(evt) {
-
-    evt.target.classList.toggle('elements__like_active');
+  _likeButton() {
+    this._like.classList.toggle('elements__like_active');
   }
 
   _deleteButton(evt) {
-    evt.target.closest('.elements__card').remove();
+    this._card.remove();
+    this._element = null;
   }
 
   // Открытие попапа с полной картинкой
@@ -34,16 +34,19 @@ export class Card {
   _openFullImage() {
     openPopup(popupPhoto);
     popupPhotoLink.src = this._image;
-    popupPhotoSubtitile.textContent = this._title;
+    popupPhotoSubtitle.textContent = this._title;
   }
 
   // Подключение слушателей для карточки
 
   _setEventListeners() {
+    this._like = this._element.querySelector('.elements__like');
+    this._card = this._element.querySelector('.elements__card');
+    
 
-    this._element
-    .querySelector('.elements__like')
-    .addEventListener('click', (evt) => {this._likeButton(evt)});
+    this._like
+    .addEventListener('click', () => {
+      this._likeButton()});
 
     this._element
     .querySelector('.elements__delete')

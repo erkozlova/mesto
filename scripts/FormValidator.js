@@ -1,26 +1,29 @@
-import {popupEditForm, popupAddForm, formSubmitHandler, formSubmitAddition, addElement} from './index.js';
-
 export class FormValidator {
   constructor(obj, formElement) {
     this._obj = obj;
-    this._formElement = formElement;
+    this._element = formElement;
+    this._inputSelector = obj.inputSelector;
+    this._submitButtonSelector = obj.submitButtonSelector;
+    this._inactiveButtonClass = obj.inactiveButtonClass;
+    this._inputErrorClass = obj.inputErrorClass;
+    this._errorClass = obj.errorClass;
   }
 
   // Добавления сообщения ошибки
 
   _showInputError(inputElement, errorMessage) {
-    const errorElement = this._formElement.querySelector(`#${inputElement.id}-error`);
-    inputElement.classList.add(this._obj.inputErrorClass);
+    const errorElement = this._element.querySelector(`#${inputElement.id}-error`);
+    inputElement.classList.add(this._inputErrorClass);
     errorElement.textContent = errorMessage;
-    errorElement.classList.add(this._obj.errorClass);
+    errorElement.classList.add(this._errorClass);
   }
 
   // Удаления сообщения об ошибке
 
   _hideInputError(inputElement) {
-    const errorElement = this._formElement.querySelector(`#${inputElement.id}-error`);
-    inputElement.classList.remove(this._obj.inputErrorClass);
-    errorElement.classList.remove(this._obj.errorClass);
+    const errorElement = this._element.querySelector(`#${inputElement.id}-error`);
+    inputElement.classList.remove(this._inputErrorClass);
+    errorElement.classList.remove(this._errorClass);
     errorElement.textContent = '';
   }
 
@@ -46,35 +49,18 @@ export class FormValidator {
 
   _toggleButtonState(buttonElement) {
     if(this._hasInvalidInput()) {
-      buttonElement.classList.add(this._obj.inactiveButtonClass);
+      buttonElement.classList.add(this._inactiveButtonClass);
+      buttonElement.disabled = true;
     } else {
-      buttonElement.classList.remove(this._obj.inactiveButtonClass);
+      buttonElement.classList.remove(this._inactiveButtonClass);
+      buttonElement.disabled = false;
     }
-  }
-
-  // Метод вызова функций сабмита
-
-  _setFormSubmit(evt) {
-    evt.preventDefault();
-      if(!this._hasInvalidInput())
-      {
-        if(this._formElement === popupEditForm) {
-          formSubmitHandler();
-        }
-        if(this._formElement === popupAddForm) {
-          formSubmitAddition();
-        }
-      }
   }
 
   // Подключение слушателей для формы
 
   _setEventListeners() {
-    this._formElement.addEventListener('submit', (evt) => {
-      this._setFormSubmit(evt);
-    });
-
-    const buttonElement = this._formElement.querySelector(this._obj.submitButtonSelector);
+    const buttonElement = this._element.querySelector(this._submitButtonSelector);
 
     this._toggleButtonState(buttonElement);
     this._inputList.forEach((inputElement) => {
@@ -86,27 +72,24 @@ export class FormValidator {
     
   }
 
-  // Метод изначального состояния форм
+  // // Метод изначального состояния форм
 
-  _setBeginButtonState() {
-    this._formElement.querySelector('.popup__close').addEventListener('click', () => {
+  deleteErrorMessage() {
+    this._element.querySelector('.popup__close').addEventListener('click', () => {
       this._inputList.forEach((inputElement) => {
         this._hideInputError(inputElement);
       });
     });
-    addElement.addEventListener('click', () => {
-      const submitButton = this._formElement.querySelector(this._obj.submitButtonSelector);
-      if(this._formElement === popupAddForm && !submitButton.classList.contains(this._obj.inactiveButtonClass)) {
-        submitButton.classList.add(this._obj.inactiveButtonClass);
-      }
-    });
+
   }
 
   // Метод, включающий валидацию
 
   enableValidation() {
-    this._inputList = Array.from(this._formElement.querySelectorAll(this._obj.inputSelector));
+    this._element.addEventListener('submit', (evt) => {
+      evt.preventDefault();
+    })
+    this._inputList = Array.from(this._element.querySelectorAll(this._obj.inputSelector));
     this._setEventListeners();
-    this._setBeginButtonState();
   }
 }
