@@ -69,19 +69,18 @@ export class FormValidator {
         this._toggleButtonState(buttonElement);
       });
     });
-    
   }
 
   // // Метод изначального состояния форм
 
-  deleteErrorMessage() {
-    this._element.querySelector('.popup__close').addEventListener('click', () => {
+  deleteErrorMessage(popupButton) {
+    popupButton.addEventListener('click', () => {
       this._inputList.forEach((inputElement) => {
         this._hideInputError(inputElement);
       });
     });
-
   }
+
 
   // Метод, включающий валидацию
 

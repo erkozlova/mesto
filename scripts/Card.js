@@ -1,19 +1,17 @@
- import {popupPhoto, popupPhotoLink, popupPhotoSubtitle, openPopup} from './utils.js';
-
 export class Card {
-  constructor(data, cardSelector) {
+  constructor(data, cardSelector, handleCardClick) {
     this._title = data.name;
     this._image = data.link;
     this._cardSelector = cardSelector;
+    this._handleCardClick = handleCardClick;
   }
 
   // Создания шаблона карточки
 
   _getTemplate() {
     const cardElement = document
-    .querySelector(this._cardSelector)
-    .content
-    .cloneNode(true);
+      .querySelector(this._cardSelector)
+      .content.cloneNode(true);
 
     return cardElement;
   }
@@ -21,7 +19,7 @@ export class Card {
   // Появление/исчезновение лайка и удаление карточки
 
   _likeButton() {
-    this._like.classList.toggle('elements__like_active');
+    this._like.classList.toggle("elements__like_active");
   }
 
   _deleteButton(evt) {
@@ -29,32 +27,27 @@ export class Card {
     this._element = null;
   }
 
-  // Открытие попапа с полной картинкой
-
-  _openFullImage() {
-    openPopup(popupPhoto);
-    popupPhotoLink.src = this._image;
-    popupPhotoSubtitle.textContent = this._title;
-  }
-
   // Подключение слушателей для карточки
 
   _setEventListeners() {
-    this._like = this._element.querySelector('.elements__like');
-    this._card = this._element.querySelector('.elements__card');
-    
+    this._like = this._element.querySelector(".elements__like");
+    this._card = this._element.querySelector(".elements__card");
 
-    this._like
-    .addEventListener('click', () => {
-      this._likeButton()});
-
-    this._element
-    .querySelector('.elements__delete')
-    .addEventListener('click', (evt) => {this._deleteButton(evt)});
+    this._like.addEventListener("click", () => {
+      this._likeButton();
+    });
 
     this._element
-    .querySelector('.elements__image')
-    .addEventListener('click', () => {this._openFullImage()});
+      .querySelector(".elements__delete")
+      .addEventListener("click", (evt) => {
+        this._deleteButton(evt);
+      });
+
+    this._element
+      .querySelector(".elements__image")
+      .addEventListener("click", () => {
+        this._handleCardClick();
+      });
   }
 
   // Создание карточки
@@ -62,12 +55,11 @@ export class Card {
   generateCard() {
     this._element = this._getTemplate();
 
-    this._element.querySelector('.elements__image').src = this._image;
-    this._element.querySelector('.elements__place').textContent = this._title;
+    this._element.querySelector(".elements__image").src = this._image;
+    this._element.querySelector(".elements__place").textContent = this._title;
 
     this._setEventListeners();
 
     return this._element;
   }
 }
-
