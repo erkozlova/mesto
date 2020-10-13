@@ -1,14 +1,12 @@
 export class UserInfo {
-  constructor(userName, userDescription) {
-    this._name = userName;
-    this._description = userDescription;
-    this._profileName = document.querySelector(".profile__name");
-    this._profileDescription = document.querySelector(".profile__description");
+  constructor(nameSelector, descriptionSelector) {
+    this._profileName = document.querySelector(nameSelector);
+    this._profileDescription = document.querySelector(descriptionSelector);
   }
 
   // Получение объекта с данными автора
   getUserInfo() {
-    return {name: this._name, description: this._description};
+    return {name: this._profileName.textContent, description: this._profileDescription.textContent};
   }
 
   // Установка данных автора на страницу

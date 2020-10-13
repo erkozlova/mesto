@@ -22,7 +22,7 @@ export class Card {
     this._like.classList.toggle("elements__like_active");
   }
 
-  _deleteButton(evt) {
+  _deleteButton() {
     this._card.remove();
     this._element = null;
   }

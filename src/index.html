@@ -43,76 +43,82 @@
 
     <!-- Попап редактирования профиля -->
     <section class="popup popup_edit">
-      <form class="popup__form" name="author" novalidate>
-        <h3 class="popup__title">Редактировать профиль</h3>
-        <label class="popup__label">
-          <input
-            class="popup__input popup__input_value_name"
-            id="author-name"
-            type="text"
-            name="name"
-            minlength="2"
-            maxlength="40"
-            required
-          />
-          <span class="popup__error" id="author-name-error"></span>
-        </label>
-        <label class="popup__label">
-          <input
-            class="popup__input popup__input_value_description"
-            id="author-description"
-            type="text"
-            name="description"
-            minlength="2"
-            maxlength="200"
-            required
-          />
-          <span class="popup__error" id="author-description-error"></span>
-        </label>
-        <input class="popup__submit" type="submit" value="Сохранить" disabled/>
-        <button class="popup__close" type="button"></button>
-      </form>
+      <div class="popup__wrapper">
+        <form class="popup__form" name="author" novalidate>
+          <h3 class="popup__title">Редактировать профиль</h3>
+          <label class="popup__label">
+            <input
+              class="popup__input popup__input_value_name"
+              id="author-name"
+              type="text"
+              name="name"
+              minlength="2"
+              maxlength="40"
+              required
+            />
+            <span class="popup__error" id="author-name-error"></span>
+          </label>
+          <label class="popup__label">
+            <input
+              class="popup__input popup__input_value_description"
+              id="author-description"
+              type="text"
+              name="description"
+              minlength="2"
+              maxlength="200"
+              required
+            />
+            <span class="popup__error" id="author-description-error"></span>
+          </label>
+          <input class="popup__submit" type="submit" value="Сохранить" disabled/>
+          <button class="popup__close" type="button"></button>
+        </form>
+      </div>
     </section>
 
     <!-- Попап добавления карточки -->
     <section class="popup popup_add">
-      <form class="popup__form" name="card" novalidate>
-        <h3 class="popup__title">Новое место</h3>
-        <label class="popup__label">
-          <input
-            class="popup__input popup__input_value_name"
-            id="place-name"
-            type="text"
-            name="name"
-            placeholder="Название"
-            minlength="1"
-            maxlength="30"
-            required
-          />
-          <span class="popup__error" id="place-name-error"></span>
-        </label>
-        <label class="popup__label">
-          <input
-            class="popup__input popup__input_value_place-link"
-            id="place-link"
-            type="url"
-            name="link"
-            placeholder="Ссылка на картинку"
-            required
-          />
-          <span class="popup__error" id="place-link-error"></span>
-        </label>
-        <input class="popup__submit" type="submit" value="Создать" disabled/>
-        <button class="popup__close" type="button"></button>
-      </form>
+      <div class="popup__wrapper">
+        <form class="popup__form" name="card" novalidate>
+          <h3 class="popup__title">Новое место</h3>
+          <label class="popup__label">
+            <input
+              class="popup__input popup__input_value_name"
+              id="place-name"
+              type="text"
+              name="name"
+              placeholder="Название"
+              minlength="1"
+              maxlength="30"
+              required
+            />
+            <span class="popup__error" id="place-name-error"></span>
+          </label>
+          <label class="popup__label">
+            <input
+              class="popup__input popup__input_value_place-link"
+              id="place-link"
+              type="url"
+              name="link"
+              placeholder="Ссылка на картинку"
+              required
+            />
+            <span class="popup__error" id="place-link-error"></span>
+          </label>
+          <input class="popup__submit" type="submit" value="Создать" disabled/>
+          <button class="popup__close" type="button"></button>
+        </form>
+      </div>
     </section>
 
     <!-- Попап увеличения картинки -->
     <section class="popup popup_photo">
-      <div class="popup__container">
-        <img class="popup__fullimage" alt="Полная картинка" />
-        <button class="popup__close" type="button"></button>
-        <h3 class="popup__subtitle"></h3>
+      <div class="popup__wrapper">
+        <div class="popup__container">
+          <img class="popup__fullimage" alt="Полная картинка" />
+          <button class="popup__close" type="button"></button>
+          <h3 class="popup__subtitle"></h3>
+        </div>
       </div>
     </section>
 

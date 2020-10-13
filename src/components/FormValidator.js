@@ -88,7 +88,7 @@ export class FormValidator {
     this._element.addEventListener('submit', (evt) => {
       evt.preventDefault();
     })
-    this._inputList = Array.from(this._element.querySelectorAll(this._obj.inputSelector));
+    this._inputList = Array.from(this._element.querySelectorAll(this._inputSelector));
     this._setEventListeners();
   }
 }

@@ -1,3 +1,4 @@
+// Массив начальных карточек
 export const initialCards = [
   {
     name: "Архыз",
@@ -30,3 +31,15 @@ export const initialCards = [
       "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg",
   },
 ];
+
+// Объект с селекторами для валидации
+export const htmlClasses = {
+  formSelector: ".popup__form",
+  inputSelector: ".popup__input",
+  submitButtonSelector: ".popup__submit",
+  inactiveButtonClass: "popup__submit_inactive",
+  inputErrorClass: "popup__input_error",
+  errorClass: "popup__error_active",
+};
+
+export const ESC_KEY_CODE = 27;
