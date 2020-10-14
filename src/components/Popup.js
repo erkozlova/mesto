@@ -3,6 +3,7 @@ import {ESC_KEY_CODE} from "../utils/constants.js";
 export class Popup {
   constructor(popupSelector) {
     this._popup = document.querySelector(popupSelector);
+    this._escClose = this._handleEscClose.bind(this);
   }
 
   // Закрытие попапа по ESC
@@ -14,7 +15,6 @@ export class Popup {
   // Открытие и закрытие попапов
   open() {
     this._popup.classList.add("popup_opened");
-    this._escClose = this._handleEscClose.bind(this);
     document.addEventListener("keydown", this._escClose);
   }
 
