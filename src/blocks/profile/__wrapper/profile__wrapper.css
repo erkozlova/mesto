@@ -1,0 +1,7 @@
+.profile__wrapper {
+  display: flex;
+}
+
+.profile__wrapper:hover .profile__avatar-edit {
+  display: flex;
+}

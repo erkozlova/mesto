@@ -1,0 +1,8 @@
+.profile__avatar-editor {
+  width: 26px;
+  height: 26px;
+  background-color: rgba(0, 0, 0, 0);
+  border: hidden;
+  cursor: pointer;
+  background-image: url(../../../images/avatar-edit.svg);
+}

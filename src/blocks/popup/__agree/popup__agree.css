@@ -1,0 +1,9 @@
+.popup__agree {
+  width: 83%;
+  height: 50px;
+  margin: 38px auto 36px;
+  border-radius: 2px;
+  background-color: black;
+  color: white;
+  cursor: pointer;
+}
