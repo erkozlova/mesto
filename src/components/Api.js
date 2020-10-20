@@ -42,9 +42,10 @@ export class Api {
         name: name,
         about: about,
       }),
-    }).catch((err) => {
-      console.log(err);
-    });
+    })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   addCard({ name, link }) {
@@ -55,6 +56,13 @@ export class Api {
         name: name,
         link: link,
       }),
+    }).then((res) => {
+      if(res.ok) {
+        return res.json();
+      }
+    })
+    .catch((err) => {
+      console.log(err);
     });
   }
 
@@ -62,6 +70,8 @@ export class Api {
     return fetch(this.baseUrl + "/cards/" + cardId, {
       method: "DELETE",
       headers: this.headers,
+    }).catch((err) => {
+      console.log(err);
     });
   }
 
@@ -70,7 +80,11 @@ export class Api {
       method: "PUT",
       headers: this.headers,
     }).then((res) => {
-      return res.json();
+      if(res.ok) {
+        return res.json();
+      }
+    }).catch((err) => {
+      console.log(err);
     });
   }
 
@@ -79,7 +93,11 @@ export class Api {
       method: "DELETE",
       headers: this.headers,
     }).then((res) => {
-      return res.json();
+      if(res.ok) {
+        return res.json();
+      }
+    }).catch((err) => {
+      console.log(err);
     });
   }
 
@@ -90,6 +108,8 @@ export class Api {
       body: JSON.stringify({
         avatar: avatar,
       }),
+    }).catch((err) => {
+      console.log(err);
     });
   }
 }
