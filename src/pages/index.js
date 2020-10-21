@@ -102,10 +102,18 @@ const createCard = (item) => {
       popupDelete.open(card, cardId);
     },
     (cardId) => {
-      return api.putLike(cardId);
+      return api.putLike(cardId).then((data) => {
+        card.setLikesInfo(data.likes);
+      }).catch((err) => {
+        console.log(err);
+      });
     },
     (cardId) => {
-      return api.deleteLike(cardId);
+      return api.deleteLike(cardId).then((data) => {
+        card.setLikesInfo(data.likes);
+      }).catch((err) => {
+        console.log(err)
+      });
     }
   );
 

@@ -43,13 +43,9 @@ export class Card {
 
     this._like.addEventListener("click", () => {                       
       if(!this._isLiked()) {
-        this._putLikeClick(this._id).then((data) => {
-          this.setLikesInfo(data.likes);
-        });
+        this._putLikeClick(this._id);
       } else {
-        this._deleteLikeClick(this._id).then((data) => {
-          this.setLikesInfo(data.likes);
-        });
+        this._deleteLikeClick(this._id);
       }
 
     });
@@ -73,7 +69,7 @@ export class Card {
   }
 
   // Установка информации о лайке
-  
+
   setLikesInfo(likes) {
     this._likesAmount.textContent = likes.length;
     this._likeButton();

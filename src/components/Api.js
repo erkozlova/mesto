@@ -1,7 +1,7 @@
 export class Api {
-  constructor(options) {
-    this.baseUrl = options.baseUrl;
-    this.headers = options.headers;
+  constructor({baseUrl, headers}) {
+    this.baseUrl = baseUrl;
+    this.headers = headers;
   }
 
   getInitialCards() {
@@ -60,6 +60,7 @@ export class Api {
       if(res.ok) {
         return res.json();
       }
+      return Promise.reject(`Ошибка: ${res.status}`);
     });
   }
 
@@ -90,6 +91,7 @@ export class Api {
       if(res.ok) {
         return res.json();
       }
+      return Promise.reject(`Ошибка: ${res.status}`);
     });
   }
 

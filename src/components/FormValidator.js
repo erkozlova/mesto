@@ -47,26 +47,24 @@ export class FormValidator {
 
   // Метод статуса активности кнопки
 
-  _toggleButtonState(buttonElement) {
+  _toggleButtonState() {
     if(this._hasInvalidInput()) {
-      buttonElement.classList.add(this._inactiveButtonClass);
-      this.setButtonSubmitStatus(buttonElement, true);
+      this.setButtonSubmitStatus(this._buttonElement, true);
     } else {
-      buttonElement.classList.remove(this._inactiveButtonClass);
-      this.setButtonSubmitStatus(buttonElement, false);
+      this.setButtonSubmitStatus(this._buttonElement, false);
     }
   }
 
   // Подключение слушателей для формы
 
   _setEventListeners() {
-    const buttonElement = this._element.querySelector(this._submitButtonSelector);
+    this._buttonElement = this._element.querySelector(this._submitButtonSelector);
 
-    this._toggleButtonState(buttonElement);
+    this._toggleButtonState();
     this._inputList.forEach((inputElement) => {
       inputElement.addEventListener('input', () => {
         this._checkInputValidaty(inputElement);
-        this._toggleButtonState(buttonElement);
+        this._toggleButtonState();
       });
     });
   }
