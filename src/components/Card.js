@@ -1,12 +1,11 @@
-import {MY_ID} from '../utils/constants.js';
-
 export class Card {
-  constructor(data, cardSelector, handleCardClick , deleteButtonClick, putLikeClick, deleteLikeClick) {
+  constructor(data, cardSelector, ownerId, handleCardClick , deleteButtonClick, putLikeClick, deleteLikeClick) {
     this._title = data.name;
     this._image = data.link;
     this._id = data._id;
     this._likes = data.likes;
     this._owner = data.owner;
+    this._ownerId = ownerId;
     this._cardSelector = cardSelector;
     this._handleCardClick = handleCardClick;
     this._deleteButtonClick = deleteButtonClick;
@@ -43,18 +42,21 @@ export class Card {
     this._card = this._element.querySelector(".elements__card");
 
     this._like.addEventListener("click", () => {                       
-      this._likeButton();
-      if(this._isLiked()) {
-        this._putLikeClick(this._id, this._likesAmount);
+      if(!this._isLiked()) {
+        this._putLikeClick(this._id).then((data) => {
+          this.setLikesInfo(data.likes);
+        });
       } else {
-        this._deleteLikeClick(this._id, this._likesAmount);
+        this._deleteLikeClick(this._id).then((data) => {
+          this.setLikesInfo(data.likes);
+        });
       }
 
     });
     
     this._deleteIcon = this._element.querySelector(".elements__delete");
 
-    if(this._owner._id === MY_ID) {
+    if(this._owner._id === this._ownerId) {
       this._deleteIcon
       .addEventListener("click", () => { 
         this._deleteButtonClick(this._card, this._id);
@@ -68,6 +70,13 @@ export class Card {
       .addEventListener("click", () => {
         this._handleCardClick();
       });
+  }
+
+  // Установка информации о лайке
+  
+  setLikesInfo(likes) {
+    this._likesAmount.textContent = likes.length;
+    this._likeButton();
   }
 
   // Создание карточки
@@ -95,7 +104,7 @@ export class Card {
       this._likesId.push(like._id);
     })
 
-    if(this._likesId.includes(MY_ID)) {
+    if(this._likesId.includes(this._ownerId)) {
       this._like.classList.add("elements__like_active");
     }
 

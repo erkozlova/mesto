@@ -13,9 +13,6 @@ export class Api {
           return res.json();
         }
         return Promise.reject(`Ошибка: ${res.status}`);
-      })
-      .catch((err) => {
-        console.log(err);
       });
   }
 
@@ -28,10 +25,11 @@ export class Api {
           return res.json();
         }
         return Promise.reject(`Ошибка: ${res.status}`);
-      })
-      .catch((err) => {
-        console.log(err);
       });
+  }
+
+  getAppInfo() {
+    return Promise.all([this.getUserData(), this.getInitialCards()]);
   }
 
   setUserData({ name, about }) {
@@ -42,10 +40,12 @@ export class Api {
         name: name,
         about: about,
       }),
-    })
-      .catch((err) => {
-        console.log(err);
-      });
+    }).then((res) => {
+      if (res.ok) {
+        return res.json();
+      }
+      return Promise.reject(`Ошибка: ${res.status}`);
+    });
   }
 
   addCard({ name, link }) {
@@ -60,9 +60,6 @@ export class Api {
       if(res.ok) {
         return res.json();
       }
-    })
-    .catch((err) => {
-      console.log(err);
     });
   }
 
@@ -70,8 +67,6 @@ export class Api {
     return fetch(this.baseUrl + "/cards/" + cardId, {
       method: "DELETE",
       headers: this.headers,
-    }).catch((err) => {
-      console.log(err);
     });
   }
 
@@ -80,11 +75,10 @@ export class Api {
       method: "PUT",
       headers: this.headers,
     }).then((res) => {
-      if(res.ok) {
+      if (res.ok) {
         return res.json();
       }
-    }).catch((err) => {
-      console.log(err);
+      return Promise.reject(`Ошибка: ${res.status}`);
     });
   }
 
@@ -96,8 +90,6 @@ export class Api {
       if(res.ok) {
         return res.json();
       }
-    }).catch((err) => {
-      console.log(err);
     });
   }
 
@@ -108,16 +100,11 @@ export class Api {
       body: JSON.stringify({
         avatar: avatar,
       }),
-    }).catch((err) => {
-      console.log(err);
+    }).then((res) => {
+      if (res.ok) {
+        return res.json();
+      }
+      return Promise.reject(`Ошибка: ${res.status}`);
     });
   }
 }
-
-export const api = new Api({
-  baseUrl: "https://mesto.nomoreparties.co/v1/cohort-16",
-  headers: {
-    authorization: "8ee11e57-c1af-4cd4-bd58-96d38c730efa",
-    "Content-type": "application/json",
-  },
-});

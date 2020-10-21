@@ -11,8 +11,5 @@ export const htmlClasses = {
 // Код клавиши ESC
 export const ESC_KEY_CODE = 27;
 
-// Id пользователя
-export const MY_ID = '951e497cc6eb2de165635296';
-
 // Контейнер для карточек
 export const CARD_LIST_SELECTOR = ".elements__list";

@@ -50,10 +50,10 @@ export class FormValidator {
   _toggleButtonState(buttonElement) {
     if(this._hasInvalidInput()) {
       buttonElement.classList.add(this._inactiveButtonClass);
-      buttonElement.disabled = true;
+      this.setButtonSubmitStatus(buttonElement, true);
     } else {
       buttonElement.classList.remove(this._inactiveButtonClass);
-      buttonElement.disabled = false;
+      this.setButtonSubmitStatus(buttonElement, false);
     }
   }
 
@@ -71,7 +71,18 @@ export class FormValidator {
     });
   }
 
-  // // Метод изначального состояния форм
+  // Установка статуса кнопки сабмита
+
+  setButtonSubmitStatus(submitButton, isDisabled) {
+    submitButton.disabled = isDisabled;
+    if(isDisabled) {
+      submitButton.classList.add("popup__submit_inactive");
+    } else {
+      submitButton.classList.remove("popup__submit_inactive");
+    }
+  }
+
+  // Метод изначального состояния форм
 
   deleteErrorMessage(popupButton) {
     popupButton.addEventListener('click', () => {

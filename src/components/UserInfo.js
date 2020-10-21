@@ -11,12 +11,17 @@ export class UserInfo {
   }
 
   // Установка данных автора на страницу
-  setUserInfo({name, description}) {
+  setUserInfo({name, description, userId}) {
     this._profileName.textContent = name;
     this._profileDescription.textContent = description;
+    this._id = userId;
   }
 
   setUserAvatar(avatar) {
     this._profileAvatar.src = avatar;
+  }
+
+  getUserId() {
+    return this._id;
   }
 }

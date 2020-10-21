@@ -1,4 +1,4 @@
-import { htmlClasses, MY_ID, CARD_LIST_SELECTOR } from "../utils/constants.js";
+import { htmlClasses, CARD_LIST_SELECTOR } from "../utils/constants.js";
 import { Card } from "../components/Card.js";
 import { FormValidator } from "../components/FormValidator.js";
 import { Section } from "../components/Section.js";
@@ -8,8 +8,16 @@ import { UserInfo } from "../components/UserInfo.js";
 import "../index.html";
 import "./index.css";
 
-import { api } from "../components/Api.js";
+import { Api } from "../components/Api.js";
 import { PopupWithQuestion } from "../components/PupupWithQuestion.js";
+
+const api = new Api({
+  baseUrl: "https://mesto.nomoreparties.co/v1/cohort-16",
+  headers: {
+    authorization: "8ee11e57-c1af-4cd4-bd58-96d38c730efa",
+    "Content-type": "application/json",
+  },
+});
 
 // DOM элементы попапов
 const popupEditElement = document.querySelector(".popup_edit");
@@ -30,12 +38,6 @@ const avatarEditor = document.querySelector(".profile__avatar-editor");
 const popupName = document.querySelector(".popup__input_value_name");
 const popupDescription = document.querySelector(
   ".popup__input_value_description"
-);
-
-// Данные новой карточки из формы
-const popupAddName = popupAddElement.querySelector(".popup__input_value_name");
-const popupAddLink = popupAddElement.querySelector(
-  ".popup__input_value_place-link"
 );
 
 // Формы редактирования и добавления
@@ -86,32 +88,24 @@ function renderLoading(isLoading, popupSubmit) {
   }
 }
 
-// Установка данных на страницу с сервера
-api.getUserData().then((data) => {
-  userInfo.setUserInfo({ name: data.name, description: data.about });
-  userInfo.setUserAvatar(data.avatar);
-});
 
 // Функция создание карточки
 const createCard = (item) => {
   const card = new Card(
     item,
     "#new-card",
+    userInfo.getUserId(),
     () => {
       popupPhoto.open(item);
     },
     (card, cardId) => {
       popupDelete.open(card, cardId);
     },
-    (cardId, likeAmount) => {
-      api.putLike(cardId).then((data) => {
-        likeAmount.textContent = data.likes.length;
-      });
+    (cardId) => {
+      return api.putLike(cardId);
     },
-    (cardId, likeAmount) => {
-      api.deleteLike(cardId).then((data) => {
-        likeAmount.textContent = data.likes.length;
-      });
+    (cardId) => {
+      return api.deleteLike(cardId);
     }
   );
 
@@ -119,8 +113,17 @@ const createCard = (item) => {
   return cardElement;
 };
 
-// Добавление изначальных карточек на страницу
-api.getInitialCards().then((initialCards) => {
+
+api.getAppInfo().then(([user, initialCards]) => {
+
+  // Установка данных пользователя
+
+  userInfo.setUserInfo({ name: user.name, description: user.about, userId: user._id });
+  userInfo.setUserAvatar(user.avatar);
+
+  
+  // Добавление изначальных карточек на страницу
+
   defaultCardList = new Section(
     {
       items: initialCards,
@@ -133,37 +136,46 @@ api.getInitialCards().then((initialCards) => {
   defaultCardList.renderItems();
 });
 
+
 // Функция изменения аватара
 function submitAvatar(avatar) {
   renderLoading(true, buttonSubmitAvatar);
-  api.changeAvatar(avatar.link)
-    .then((res) => {
-      if(res.ok) {
-        userInfo.setUserAvatar(avatar.link);
-      }
+  api
+    .changeAvatar(avatar.link)
+    .then(() => {
+      userInfo.setUserAvatar(avatar.link);
     })
     .finally(() => {
       renderLoading(false, buttonSubmitAvatar);
+      popupAvatar.close();
     });
-  userInfo.setUserAvatar(avatar.link);
-  popupAvatar.close();
 }
 
 // Функция удаления карточки
-function submitDeleteCard(cardId) {
-  api.deleteCard(cardId);
+function submitDeleteCard(cardId, card, popup) {
+  api
+    .deleteCard(cardId)
+    .then(() => {
+      card.remove();
+    })
+    .finally(() => {
+      popup.close();
+    });
 }
 
 // Функция установки новых данных автора
 
 function submitFormEditing({ name, description }) {
   renderLoading(true, buttonSubmitEdit);
-  api.setUserData({ name: name, about: description }).finally(() => {
-    renderLoading(false, buttonSubmitEdit);
-  });
-  userInfo.setUserInfo({ name, description });
-
-  popupEdit.close();
+  api
+    .setUserData({ name: name, about: description })
+    .then(() => {
+      userInfo.setUserInfo({ name, description });
+    })
+    .finally(() => {
+      renderLoading(false, buttonSubmitEdit);
+      popupEdit.close();
+    });
 }
 
 // Функция отправки формы новой карточки
@@ -177,40 +189,9 @@ function submitFormAddition(item) {
     })
     .finally(() => {
       renderLoading(false, buttonSubmitAdd);
+      popupAdd.close();
     });
-
-  popupAddName.value = "";
-  popupAddLink.value = "";
-
-  popupAdd.close();
 }
-
-// Обработка попапа редактирования
-
-editorElement.addEventListener("click", () => {
-  popupEdit.open();
-  buttonSubmitEdit.disabled = false;
-  buttonSubmitEdit.classList.remove("popup__submit_inactive");
-  const { name, description } = userInfo.getUserInfo();
-  popupName.value = name;
-  popupDescription.value = description;
-});
-
-// Обработка попапа добавления
-
-addElement.addEventListener("click", () => {
-  popupAdd.open();
-  buttonSubmitAdd.disabled = true;
-  buttonSubmitAdd.classList.add("popup__submit_inactive");
-});
-
-// Обработка попапа аватара
-
-avatarEditor.addEventListener("click", () => {
-  popupAvatar.open();
-  buttonSubmitAvatar.disabled = true;
-  buttonSubmitAvatar.classList.add("popup__submit_inactive");
-});
 
 // Добавление валидации формам
 
@@ -225,3 +206,27 @@ formValidAdd.deleteErrorMessage(addElement);
 const formValidAvatar = new FormValidator(htmlClasses, popupAvatarForm);
 formValidAvatar.enableValidation();
 formValidAvatar.deleteErrorMessage(avatarEditor);
+
+// Обработка попапа редактирования
+
+editorElement.addEventListener("click", () => {
+  popupEdit.open();
+  formValidEdit.setButtonSubmitStatus(buttonSubmitEdit, false);
+  const { name, description } = userInfo.getUserInfo();
+  popupName.value = name;
+  popupDescription.value = description;
+});
+
+// Обработка попапа добавления
+
+addElement.addEventListener("click", () => {
+  popupAdd.open();
+  formValidAdd.setButtonSubmitStatus(buttonSubmitAdd, true);
+});
+
+// Обработка попапа аватара
+
+avatarEditor.addEventListener("click", () => {
+  popupAvatar.open();
+  formValidAvatar.setButtonSubmitStatus(buttonSubmitAvatar, true);
+});

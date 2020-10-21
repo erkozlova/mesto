@@ -16,9 +16,7 @@ export class PopupWithQuestion extends Popup {
   setEventListeners() {
     super.setEventListeners();
     this._agreeButton.addEventListener('click', () => {
-      this._submit(this._id);
-      this._card.remove();
-      this.close();
+      this._submit(this._id, this._card, this);
     });
   }
 }
